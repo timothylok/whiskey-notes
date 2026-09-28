@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { deleteNote } from "@/app/actions";
@@ -31,16 +32,27 @@ export default async function TastingPage({ params }: PageProps<"/tasting/[id]">
 
   return (
     <article className="grid gap-6">
-      <header className="grid gap-1">
-        <Link href={`/whiskey/${whiskey.id}`} className="text-sm text-muted-foreground hover:underline">
-          {whiskey.distillery} · {whiskey.region}
-        </Link>
-        <h1 className="flex items-center gap-3 text-2xl font-semibold">
-          {whiskey.name} <Rating value={note.rating} />
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Tasted by {note.authorName} on {note.createdAt.toLocaleDateString()}
-        </p>
+      <header className="flex flex-col gap-6 sm:flex-row">
+        {whiskey.imageUrl && (
+          <Image
+            src={whiskey.imageUrl}
+            alt={whiskey.name}
+            width={200}
+            height={280}
+            className="h-auto w-40 rounded-lg object-cover"
+          />
+        )}
+        <div className="grid content-start gap-1">
+          <Link href={`/whiskey/${whiskey.id}`} className="text-sm text-muted-foreground hover:underline">
+            {whiskey.distillery} · {whiskey.region}
+          </Link>
+          <h1 className="flex items-center gap-3 text-2xl font-semibold">
+            {whiskey.name} <Rating value={note.rating} />
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Tasted by {note.authorName} on {note.createdAt.toLocaleDateString()}
+          </p>
+        </div>
       </header>
 
       <dl className="grid gap-4">
